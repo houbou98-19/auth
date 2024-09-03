@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "SVH1st9uSzmAox9oKypV1O9TH885eu9e12l6VQptS4BiiOgOaqPeXj0f6SPB58kZo8IJLc+s8k9q69eJH2I8cA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\houbo\\OneDrive\\Desktop\\Gittar\\Drifta-Molnapplikationer\\v36\\Tisdag\\auth\\auth.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\houbo\\.nuget\\packages\\microsoft.aspnetcore.authentication.google\\8.0.8\\microsoft.aspnetcore.authentication.google.8.0.8.nupkg.sha512"
+  ],
+  "logs": []
+}
