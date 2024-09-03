@@ -1,6 +1,12 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.HttpOverrides;
 
+using System.Security.Claims;
+using Serilog;
+using Serilog.Core;
+using Serilog.Formatting.Compact;
+using Utilities.Logging;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -20,6 +26,24 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
     options.KnownNetworks.Clear();
     options.KnownProxies.Clear();
 });
+
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton<UserNameEnricher>();
+
+var serviceProvider = builder.Services.BuildServiceProvider();
+var userNameEnricher = serviceProvider.GetService<UserNameEnricher>();
+
+// Configure Serilog
+Log.Logger = new LoggerConfiguration()
+    .Enrich.FromLogContext() // Enrich log messages with additional context (e.g., request information).
+    .Enrich.With(userNameEnricher) // Enrich log messages with the current user name.
+    .WriteTo.Console(new RenderedCompactJsonFormatter()) // Output logs in JSON format.
+    .CreateLogger();
+
+// Override the default logger configuration with Serilog.
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(Log.Logger);
 
 var app = builder.Build();
 
@@ -47,3 +71,5 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+Log.CloseAndFlush();

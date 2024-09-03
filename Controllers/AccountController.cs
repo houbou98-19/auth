@@ -11,6 +11,7 @@ namespace AuthDemo.Controllers;
 
 public class AccountController : Controller
 {
+    private readonly ILogger<AccountController> _logger;
     // Mocked user data
     private const string MockedUsername = "demo";
     private const string MockedPassword = "pass"; // Note: NEVER hard-code passwords in real applications.
@@ -20,9 +21,15 @@ public class AccountController : Controller
         return View();
     }
 
+    public AccountController(ILogger<AccountController> logger)
+    {
+        _logger = logger;
+    }
+
     [Authorize] // This attribute ensures that only authenticated users can access this action.
     public IActionResult SecretInfo()
     {
+        _logger.LogInformation("Secret info page requested.");
         return View();
     }
 
